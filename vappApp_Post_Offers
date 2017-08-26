@@ -1,0 +1,69 @@
+// TODO implement
+var AWS = require("aws-sdk");
+var doc = require('dynamodb-doc');
+var db = new doc.DynamoDB();
+var docClient = new AWS.DynamoDB.DocumentClient();
+
+exports.handler = function(event, context) {
+    
+    var retailerID  = event.retailerID;
+    var altitude = event.altitude;
+    var category = event.category;
+    category === "" ? category="food/dining" : category=category
+    var duration  = event.duration;
+    var latitude = event.latitude;
+    var longitude = event.longitude;
+    var offerDescription = event.offerDescription;
+    var offerDescription2  = event.offerDescription2;
+    var offerDescription3 = event.offerDescription3;
+    var offerEndTime = event.offerEndTime;
+    var offerEndTime2 = event.offerEndTime2;
+    var offerEndTime3 = event.offerEndTime3;
+    var offerStartTime = event.offerStartTime;
+    var offerStartTime2 = event.offerStartTime2;
+    var offerStartTime3  = event.offerStartTime3;
+    var rating = event.rating;
+    var retailerName = event.retailerName;
+    retailerName === "" ? retailerName="ret" : retailerName=event.retailerName
+
+    var streetName = event.streetName;
+    var website = event.website;
+     
+    var tableName = "VappApp_RetailOffers";
+
+    var params = {
+        TableName:tableName,
+        Item: {         
+        "retailerID": retailerID,
+         "altitude":  altitude,
+         "category": category,
+         "duration": duration,
+         "latitude":  latitude,
+         "longitude": longitude,
+         "offerDescription": offerDescription,
+         "offerDescription2":  offerDescription2,
+         "offerDescription3": offerDescription3,
+         "offerStartTime": offerStartTime,
+         "offerStartTime2": offerStartTime2,
+         "offerStartTime3": offerStartTime3,
+         "offerEndTime": offerEndTime,
+         "offerEndTime2": offerEndTime2,
+         "offerEndTime3": offerEndTime3,
+         "rating": rating,
+         "retailerName": retailerName,
+         "streetname": streetName,
+         "website": website
+        }
+    };
+    
+    console.log("Adding a new item...");
+    docClient.put(params, function(err, data) {
+        if (err) {
+            console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+        console.log("Added item:", params);
+        }
+            context.done(null,params)
+
+    });
+};

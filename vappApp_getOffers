@@ -1,0 +1,68 @@
+console.log('Loading function');
+      var doc = require('dynamodb-doc');
+      var db = new doc.DynamoDB();
+      var datafound = [];
+
+exports.handler = function(event, context) 
+{
+     var retailerID  = event.retailerID;
+     var latitude = event.latitude;
+     var longitude = event.longitude;
+     var retailerName  = event.retailerName;
+     var offerDescription = event.offerDescription;
+     var offerStartTime = event.offerStartTime;
+     var offerEndTime = event.offerEndTime;
+     var offerDescription2 = event.offerDescription2;
+     var offerStartTime2 = event.offerStartTime2;
+     var offerEndTime2 = event.offerEndTime2;
+     var offerDescription3 = event.offerDescription3;
+     var offerStartTime3 = event.offerStartTime3;
+     var offerEndTime3 = event.offerEndTime3;
+     var category = event.offerStartTime;
+     var rating = event.rating;
+     var website = event.website;
+     var streetname = event.streetname;
+     var duration = event.duration;
+     var altitude = event.altitude;
+datafound = [];
+ 
+var tableName = "VappApp_RetailOffers";
+
+
+ var params = {
+     TableName:tableName
+ };
+
+    console.log(params);
+    function callback (err, nat) {
+        console.log("Nat is equal to ...");
+        console.log(nat);
+
+    }
+db.scan(params,function(err,data){
+     if (err){
+         console.log(err);
+         console.log("some error");
+     }
+     else {
+        data.Items.forEach(function(movie) {
+            //  callback("h",nat);
+            datafound.push(movie);
+       })
+         
+     }
+        context.done(null,
+            datafound
+        );
+
+}) 
+//  myfunc(callback)
+
+};
+
+// var myfunc = function(callback) {
+//     console.log("my func was called");
+//     callback({'result': 'success'});
+// };
+
+
